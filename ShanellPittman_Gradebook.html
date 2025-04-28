@@ -8,24 +8,20 @@
       font-family: Arial, sans-serif;
       margin: 30px;
     }
-
     h1 {
       text-align: center;
       color: #333;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
-
     th, td {
       border: 1px solid #aaa;
       padding: 10px;
       text-align: center;
     }
-
     th {
       background-color: #f0f0f0;
     }
@@ -33,6 +29,7 @@
 </head>
 <body>
   <h1>Shanell Pittman's Gradebook</h1>
+  
   <table id="gradebookTable">
     <thead>
       <tr>
@@ -46,11 +43,70 @@
         <th>Lesson 11 Assignment: Flowgorithm Game</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Student rows will be added here with JavaScript in future -->
+    <tbody id="gradebook-body">
+      <!-- Student rows will be added here with JavaScript -->
     </tbody>
   </table>
 
-  <script src="gradebook.js"></script>
+  <script>
+    // Fetch grade data from the server
+    async function fetchGradeData() {
+      try {
+        const response = await fetch('/grades'); // Fetch data from server
+        const data = await response.json();
+        populateGradebook(data);
+      } catch (error) {
+        console.error('Error fetching grade data:', error);
+      }
+    }
+
+    // Populate the table with fetched data
+    function populateGradebook(data) {
+      const tableBody = document.getElementById('gradebook-body');
+      tableBody.innerHTML = ''; // Clear existing rows
+
+      data.forEach(student => {
+        const row = document.createElement('tr');
+
+        const studentNameCell = document.createElement('td');
+        studentNameCell.textContent = student.student_name;
+        row.appendChild(studentNameCell);
+
+        const academicIntegrityCell = document.createElement('td');
+        academicIntegrityCell.textContent = student.academic_integrity_agreement;
+        row.appendChild(academicIntegrityCell);
+
+        const attendanceQuiz1Cell = document.createElement('td');
+        attendanceQuiz1Cell.textContent = student.attendance_quiz_1;
+        row.appendChild(attendanceQuiz1Cell);
+
+        const lesson5Cell = document.createElement('td');
+        lesson5Cell.textContent = student.lesson_5_agile_conflict;
+        row.appendChild(lesson5Cell);
+
+        const lab4Cell = document.createElement('td');
+        lab4Cell.textContent = student.lab_4_chatgpt;
+        row.appendChild(lab4Cell);
+
+        const lesson7LabCell = document.createElement('td');
+        lesson7LabCell.textContent = student.lesson_7_lab_codecademy_proof;
+        row.appendChild(lesson7LabCell);
+
+        const lesson10LabCell = document.createElement('td');
+        lesson10LabCell.textContent = student.lesson_10_lab_flowgorithm;
+        row.appendChild(lesson10LabCell);
+
+        const lesson11AssignmentCell = document.createElement('td');
+        lesson11AssignmentCell.textContent = student.lesson_11_assignment_flowgorithm_game;
+        row.appendChild(lesson11AssignmentCell);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Run fetchGradeData when page loads
+    window.onload = fetchGradeData;
+  </script>
+
 </body>
 </html>
